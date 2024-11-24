@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación de Formulario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .error {
+            color: red;
+            font-size: 0.9rem;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Formulario con Validación</h1>
+    <form id="formulario">
+        <label for="email">Email:</label><br>
+        <input type="text" id="email" name="email">
+        <div id="emailError" class="error"></div><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password">
+        <div id="passwordError" class="error"></div><br>
+
+        <button type="submit" id="submitButton" disabled>Enviar</button>
+    </form>
+
+    <script>
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const emailError = document.getElementById("emailError");
+        const passwordError = document.getElementById("passwordError");
+        const submitButton = document.getElementById("submitButton");
+
+        let isEmailValid = false; 
+        let isPasswordValid = false; 
+
+        emailInput.addEventListener("blur", () => {
+            const emailValue = emailInput.value.trim();
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            if (!emailRegex.test(emailValue)) {
+                emailError.textContent = "El email debe tener el formato: xxxx@yyyy.zzzz";
+                isEmailValid = false;
+            } else {
+                emailError.textContent = ""; 
+                isEmailValid = true;
+            }
+            validarFormulario();
+        });
+
+        passwordInput.addEventListener("blur", () => {
+            const passwordValue = passwordInput.value.trim();
+
+            if (passwordValue.length >= 8 && passwordValue.length <= 10) {
+                passwordError.textContent = ""; 
+                isPasswordValid = true;
+            } else {
+                passwordError.textContent = "La contraseña debe tener entre 8 y 10 caracteres.";
+                isPasswordValid = false;
+            }
+            validarFormulario();
+        });
+
+        emailInput.addEventListener("input", () => {
+            emailError.textContent = "";
+        });
+
+        passwordInput.addEventListener("input", () => {
+            passwordError.textContent = "";
+        });
+
+        function validarFormulario() {
+            if (isEmailValid && isPasswordValid) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        }
+
+        const formulario = document.getElementById("formulario");
+        formulario.addEventListener("submit", (event) => {
+            if (!isEmailValid || !isPasswordValid) {
+                event.preventDefault();
+                alert("Por favor, corrige los errores antes de enviar.");
+            }
+        });
+    </script>
+</body>
+</html>
