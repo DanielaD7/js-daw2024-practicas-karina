@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporizador con Promesas</title>
+</head>
+<body>
+    <h1>Temporizador con Promesa</h1>
+    <p>Esperando el temporizador...</p>
+    <p id="resultado"></p>
+
+    <script>
+        function temporizador(ms) {
+            return new Promise((resolve, reject) => {
+                let timeoutId = setTimeout(() => {
+                    resolve("Tiempo concluido");
+                }, ms);
+
+                setTimeout(() => {
+                    clearTimeout(timeoutId); 
+                    reject("El tiempo no va bien");
+                }, ms * 2);
+            });
+        }
+
+        temporizador(5000)
+            .then(mensaje => {
+                document.getElementById("resultado").textContent = mensaje;
+                document.getElementById("resultado").style.color = "green";
+            })
+            .catch(error => {
+                document.getElementById("resultado").textContent = error;
+                document.getElementById("resultado").style.color = "red";
+            });
+    </script>
+</body>
+</html>
